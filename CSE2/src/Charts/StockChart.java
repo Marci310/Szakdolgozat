@@ -13,9 +13,12 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 //import org.jfree.ui.ApplicationFrame;
 
+
 public class StockChart extends ApplicationFrame {
 
-    public StockChart(String title, XYSeries series) {
+
+    public StockChart(String title, XYSeries series)
+    {
         super(title);
         JFreeChart chart = createChart(series);
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -23,7 +26,9 @@ public class StockChart extends ApplicationFrame {
         setContentPane(chartPanel);
     }
 
-    private JFreeChart createChart(XYSeries series) {
+
+    private JFreeChart createChart(XYSeries series)
+    {
         XYSeriesCollection dataset = new XYSeriesCollection(series);
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
@@ -44,6 +49,7 @@ public class StockChart extends ApplicationFrame {
         plot.setDomainAxis(dateAxis);
         plot.setRangeAxis(valueAxis);
         plot.setRenderer(renderer);
+
         return chart;
     }
 }

@@ -2,70 +2,24 @@ package Helpers;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import static java.time.DayOfWeek.*;
 import static java.util.Set.of;
 
-public class TimeSerie {
+
+public class TimeSerie
+{
+
     private LocalDate startDate;
     private LocalDate endDate;
-
-    private final Set<DayOfWeek> businessDays = of(
-            MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY
-    );
-
     private Set<LocalDate> fixHoliday;
     private Set<LocalDate> flexHoliday;
     private Set<LocalDate> forcedWorkDay;
-
     private List<LocalDate> workDays;
-
-    public void generateDates()
-    {
-        workDays= startDate.datesUntil(endDate)
-                // filtering for business days.
-                .collect(Collectors.toList());
-    }
-    private boolean isWorkDay(LocalDate date)
-    {
-        if (checkForcedWorkday(date)) return true;
-        if (checkForcedHoliday(date)) return false;
-        return businessDays.contains(date.getDayOfWeek());
-
-    }
-    public void generateWorkDates()
-    {
-        workDays= startDate.datesUntil(endDate)
-                // filtering for business days.
-                .filter(t -> isWorkDay(t)).collect(Collectors.toList());
-    }
-    public List<LocalDate> getWorkDates()
-    {
-        if (workDays==null) generateWorkDates();
-        return workDays;
-    }
-    public int getNumberofWorkDates()
-    {
-        List<LocalDate> dates=getWorkDates();
-        return dates.size();
-    }
-    public int getNumberofWorkDatesUntil(LocalDate endDate)
-    {
-        int rc=0;
-        List<LocalDate> dates=getWorkDates();
-        for(LocalDate actDate:dates)
-        {
-            if (actDate.isBefore(endDate)) rc++;
-            else break ;
-
-        }
-        return rc;
-    }
+    private final Set<DayOfWeek> businessDays = of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY);
 
     public TimeSerie(LocalDate startDate, LocalDate endDate)
     {
@@ -74,6 +28,50 @@ public class TimeSerie {
         flexHoliday=new HashSet<>();
         forcedWorkDay=new HashSet<>();
     }
+
+
+    public void generateDates()
+    {
+        workDays= startDate.datesUntil(endDate).collect(Collectors.toList());
+    }
+
+    private boolean isWorkDay(LocalDate date)
+    {
+        return checkForcedWorkday(date) || (!checkForcedHoliday(date) && businessDays.contains(date.getDayOfWeek()));
+    }
+    public void generateWorkDates()
+    {
+        workDays= startDate.datesUntil(endDate)
+                .filter(t -> isWorkDay(t)).collect(Collectors.toList());
+    }
+    public List<LocalDate> getWorkDates()
+    {
+        if (workDays==null) {
+            generateWorkDates();
+        }
+
+        return workDays;
+    }
+    public int getNumberOfWorkDays()
+    {
+        return getWorkDates().size();
+    }
+    public int getNumberOfWorkDaysUntil(LocalDate endDate)
+    {
+        int rc=0;
+        List<LocalDate> dates=getWorkDates();
+        for(LocalDate actDate:dates)
+        {
+            if (actDate.isBefore(endDate)) {
+                rc++;
+            }else {
+                break;
+            }
+        }
+        return rc;
+    }
+
+
     public void changeTime(LocalDate startDate, LocalDate endDate)
     {
         this.startDate=startDate;
@@ -82,10 +80,10 @@ public class TimeSerie {
     }
     public void resetLength(int days)
     {
-        if (days<=0)
+        if (days<=0) {
             return;
+        }
         workDays=null;
-        int i=0;
         endDate=startDate;
         while (days>0)
         {
@@ -96,8 +94,7 @@ public class TimeSerie {
     }
     public boolean checkForcedWorkday(LocalDate actDate)
     {
-        if (forcedWorkDay.contains(actDate)) return true;
-        return false;
+        return forcedWorkDay.contains(actDate);
     }
     public boolean checkForcedHoliday(LocalDate actDate)
     {
