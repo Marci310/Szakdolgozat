@@ -2,8 +2,7 @@ import Asset.Asset;
 import Product.Product;
 
 
-public class Market
-{
+public class Market {
     private Agent[] agents;
     private Asset[] assets;
     private int impliedVolatility;
@@ -11,16 +10,14 @@ public class Market
     private int riskFreeInterestRate;
 
 
-    public Market(Agent[] agents, Asset[] assets, int impliedVolatility, int riskFreeInterestRate)
-    {
+    public Market(Agent[] agents, Asset[] assets, int impliedVolatility, int riskFreeInterestRate) {
         this.agents = agents;
         this.assets = assets;
         this.impliedVolatility = impliedVolatility;
         this.riskFreeInterestRate = riskFreeInterestRate;
     }
 
-    public Market()
-    {    /*ez ide nem kell*/
+    public Market() {    /*ez ide nem kell*/
         this.agents = null;
         this.assets = null;
         this.impliedVolatility = 1;
@@ -28,60 +25,49 @@ public class Market
     }
 
 
-    public void makeTrade(Agent agent, Product product)
-    {
+    public void makeTrade(Agent agent, Product product) {
         // Implementation goes here
     }
 
     // Getters and setters for the private variables
 
-    public Agent[] getAgents()
-    {
+    public Agent[] getAgents() {
         return agents;
     }
 
-    public void setAgents(Agent[] agents)
-    {
+    public void setAgents(Agent[] agents) {
         this.agents = agents;
     }
 
-    public Asset[] getAssets()
-    {
+    public Asset[] getAssets() {
         return assets;
     }
 
-    public void setAssets(Asset[] assets)
-    {
+    public void setAssets(Asset[] assets) {
         this.assets = assets;
     }
 
-    public int getImpliedVolatility()
-    {
+    public int getImpliedVolatility() {
         return impliedVolatility;
     }
 
-    public void setImpliedVolatility(int impliedVolatility)
-    {
+    public void setImpliedVolatility(int impliedVolatility) {
         this.impliedVolatility = impliedVolatility;
     }
 
-    public String getTrades()
-    {
+    public String getTrades() {
         return trades;
     }
 
-    public void setTrades(String trades)
-    {
+    public void setTrades(String trades) {
         this.trades = trades;
     }
 
-    public int getRiskFreeInterestRate()
-    {
+    public int getRiskFreeInterestRate() {
         return riskFreeInterestRate;
     }
 
-    public void setRiskFreeInterestRate(int riskFreeInterestRate)
-    {
+    public void setRiskFreeInterestRate(int riskFreeInterestRate) {
         this.riskFreeInterestRate = riskFreeInterestRate;
     }
 }

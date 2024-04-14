@@ -7,8 +7,7 @@ public abstract class TradingStrategy {
 
     private Product[] products;
 
-    public TradingStrategy(Product[] products)
-    {
+    public TradingStrategy(Product[] products) {
         this.products = products;
     }
 
@@ -16,13 +15,11 @@ public abstract class TradingStrategy {
 
     // Getters and setters for the private variable
 
-    public Product[] getProducts()
-    {
+    public Product[] getProducts() {
         return products;
     }
 
-    public void setProducts(Product[] products)
-    {
+    public void setProducts(Product[] products) {
         this.products = products;
     }
 }

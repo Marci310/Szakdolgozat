@@ -17,8 +17,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class StockChart extends ApplicationFrame {
 
 
-    public StockChart(String title, XYSeries series)
-    {
+    public StockChart(String title, XYSeries series) {
         super(title);
         JFreeChart chart = createChart(series);
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -27,8 +26,7 @@ public class StockChart extends ApplicationFrame {
     }
 
 
-    private JFreeChart createChart(XYSeries series)
-    {
+    private JFreeChart createChart(XYSeries series) {
         XYSeriesCollection dataset = new XYSeriesCollection(series);
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(

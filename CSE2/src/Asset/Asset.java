@@ -1,10 +1,5 @@
 package Asset;
 
-import Product.Product;
-import Resources.Resources;
-
-import java.util.Date;
-
 public class Asset {
     private static final int STEPS = 252; // 252 trading days in a year
     private double unitPrice;
@@ -23,37 +18,31 @@ public class Asset {
         dailyRiskFreeRate = Math.pow(1.0 + riskFreeRate, 1.0 / (double) STEPS) - 1.0;
     }
 
-    public void createPrice()
-    {
+    public void createPrice() {
         // Implementation for creating the price of the asset goes here
         price = unitPrice * resources.getSize();
     }
 
     // Getters for the private variables
 
-    public double getPrice()
-    {
+    public double getPrice() {
         return price;
     }
 
-    public Resources getResources()
-    {
+    public Resources getResources() {
         return resources;
     }
 
-    public String getLocation()
-    {
+    public String getLocation() {
         return location;
     }
 
     //risk free rate for a year
-    public double getRiskFreeRate()
-    {
+    public double getRiskFreeRate() {
         return riskFreeRate;
     }
 
-    public double getDailyRiskFreeRate()
-    {
+    public double getDailyRiskFreeRate() {
         return dailyRiskFreeRate;
     }
 }
