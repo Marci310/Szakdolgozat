@@ -9,18 +9,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.DoubleUnaryOperator;
 
-public class Call  extends Option
-{
+public class Call extends Option {
 
     public Call(double price, Asset asset, LocalDate derivativeDate, double strikePrice, double volatility) {
         super(price, asset, derivativeDate, strikePrice, volatility);
         calculatePrice();
     }
 
-
     @Override
-    public void calculatePrice()
-    {
+    public void calculatePrice() {
         // Implementation for calculating the price of a call option goes here
         this.setPrice(calculateAssumedCallPrice(getNumberOfTimeSteps(), getStrikePrice()));
     }
