@@ -1,144 +1,96 @@
 package Product;
 
-import Asset.Asset;
-import TradingStrategy.MyEuropeanOption;
-import net.finmath.exception.CalculationException;
-import net.finmath.montecarlo.assetderivativevaluation.MonteCarloAssetModel;
-import net.finmath.plots.Named;
-import net.finmath.plots.Plot;
-import net.finmath.plots.Plot2D;
-import net.finmath.stochastic.RandomVariable;
+import Assets.Asset;
+import net.finmath.functions.AnalyticFormulas;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoubleUnaryOperator;
 
 
-public abstract class Option extends Derivative 
+public abstract class Option
 {
+    private LocalDate startDate;
+    private LocalDate expirationDate;
+    private double strikePrice;
+    private double originalPrice;
+    private int maturity;
+    private double volatility;
+    private double value;
+    private double riskFreeRate;
+    private List<Double> profits = new ArrayList<>();
+    private Asset asset;
 
-    public Option(double price, Asset asset, LocalDate derivativeDate, double strikePrice, double volatility)
-    {
-        super(price, asset, derivativeDate, strikePrice, volatility);
+    public Option(double volatility, int maturity, double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
+        this.volatility = volatility;
+        this.maturity = maturity;
+        this.originalPrice = asset.getPrice();
+        this.strikePrice = strikePrice;
+        this.startDate = startDate;
+        this.expirationDate = expirationDate;
+        this.riskFreeRate = asset.getDailyRiskFreeRate(maturity);
+        this.asset = asset;
     }
-    
 
-    public abstract void calculatePrice();
+    public abstract void getOptionPrice();
 
-    private double calculateAssumedPrice(double initialPrice, int days, double strikePrice, boolean isCall)
-    {
-        if (days>getNumberOfTimeSteps()) {
-            days = getNumberOfTimeSteps();
+    public abstract double calculateProfit(double currentPrice);
+
+    public boolean addOptionProfit(double profit, LocalDate currentDate){
+        if(currentDate.isAfter(expirationDate)) {
+            return false;
         }
-
-        double maturity= getNumberOfTimeSteps()-days;
-        var europeanOption = new MyEuropeanOption(maturity,strikePrice);
-        var simulation = (initialPrice>=0) ? new MonteCarloAssetModel(generateProcessForPriceAndDays(initialPrice,getNumberOfTimeSteps()-days)) :
-                new MonteCarloAssetModel(getProcess());
-        RandomVariable valueOfCall = null;
-        try {
-            valueOfCall = europeanOption.getCallOrPutValue(0.0, simulation, isCall);
-        } catch (CalculationException e) {
-            return 0;
+        else if (currentDate.isEqual(expirationDate)) {
+            profits.add(profit);
+            return true;
         }
-
-        return valueOfCall.average().doubleValue();
-
+        profits.add(profit);
+        return false;
     }
 
-    private double calculateAssumedPriceCommon(int days, double strikePrice, boolean isCall)
-    {
-        return calculateAssumedPrice(-1,days,strikePrice,isCall);
+    public abstract String getTitle();
+
+    public List<Double> getAssetPrices(){
+        return asset.getAssetPrice();
     }
 
-    private double calculateAssumedPriceCommonWithNewInitialPrice(double initialPrice, int days, double strikePrice, boolean isCall)
-    {
-        return calculateAssumedPrice(initialPrice,days,strikePrice,isCall);
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    public double calculateAssumedCallPrice(int days, double strikePrice)
-    {
-        return calculateAssumedPriceCommon(days, strikePrice, true);
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public double calculateAssumedCallPrice(LocalDate endDate, double strikePrice)
-    {
-        return calculateAssumedCallPrice(getNumberOfTimeStepsUntil(endDate), strikePrice);
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public double calculateAssumedPutPrice(int days, double strikePrice)
-    {
-        return calculateAssumedPriceCommon(days, strikePrice, false);
+    public double getStrikePrice() {
+        return strikePrice;
     }
 
-    private double calculateAssumedOptionPrice(int day, double usedPrice, List<Double> path, boolean isCall)
-    {
-        return calculateAssumedPriceCommonWithNewInitialPrice(path.get(day), day, usedPrice, isCall);
+    public double getOriginalPrice() {
+        return originalPrice;
     }
 
-    private void printAverageAndOption(double temporaryStrikePrice, boolean isCall)
-    {
-        String text = isCall ? "call cost" : "put profit";
-
-        ArrayList<Named<DoubleUnaryOperator>> operators=new ArrayList<>();
-
-        final double usedPrice = temporaryStrikePrice<=0 ? getStrikePrice() : temporaryStrikePrice;
-        DoubleUnaryOperator doubleUnaryOperator1= day->getAverage().get((int)day);
-        operators.add(new Named<>("average",doubleUnaryOperator1));
-
-        final List<Double> path=getRandomPath();
-        DoubleUnaryOperator doubleUnaryOperator2= day->calculateAssumedOptionPrice((int)day, usedPrice,path, true)+Math.min(usedPrice,path.get(path.size()-1));
-        operators.add(new Named<>(text+" on "+usedPrice,doubleUnaryOperator2));
-
-        DoubleUnaryOperator doubleUnaryOperator3= isCall ? day->path.get((int)day): day -> Math.max(usedPrice,path.get(path.size()-1)) - calculateAssumedOptionPrice((int)day, usedPrice,path, false);;
-        operators.add(new Named<>("random path "+usedPrice,doubleUnaryOperator3));
-        Plot plot = new Plot2D(0.0, getNumberOfTimeSteps(), getNumberOfTimeSteps(), operators);
-        plot.setTitle("Average (red) and "+text+" for 115 (green) and a random path (blue)").setXAxisLabel("day").setYAxisLabel("value");
-        try {
-            plot.show();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public int getMaturity() {
+        return maturity;
     }
 
-    public void printAverageAndCallOption(double temporaryStrikePrice)
-    {
-        printAverageAndOption(temporaryStrikePrice, true);
+    public double getVolatility() {
+        return volatility;
     }
 
-    public void printAverageAndPutOption(double temporaryStrikePrice)
-    {
-        printAverageAndOption(temporaryStrikePrice, false);
+    public double getValue() {
+        return value;
     }
 
-    public void printOptions(double temporaryStrikePrice)
-    {
-        ArrayList<Named<DoubleUnaryOperator>> operators=new ArrayList<>();
-
-        final double usedPrice= (temporaryStrikePrice<=0 ? getStrikePrice() : temporaryStrikePrice);
-        DoubleUnaryOperator doubleUnaryOperator1= day->calculateAssumedPutPrice((int)day, usedPrice);
-        operators.add(new Named<>("put price on "+usedPrice,doubleUnaryOperator1));
-        DoubleUnaryOperator doubleUnaryOperator2= day->calculateAssumedCallPrice((int)day, usedPrice);
-        operators.add(new Named<>("call price on "+usedPrice,doubleUnaryOperator2));
-        Plot plot = new Plot2D(0.0, getNumberOfTimeSteps(), getNumberOfTimeSteps(), operators);
-        plot.setTitle("Put and call price on "+usedPrice).setXAxisLabel("day").setYAxisLabel("value");
-        try {
-            plot.show();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+    public double getRiskFreeRate() {
+        return riskFreeRate;
     }
 
-    public List<Double> getOptionPrices(double usedPrice, int steps, int cycles, boolean call, List<Double> path)
-    {
-        ArrayList<Double> prices=new ArrayList<>();
-        for(int i=0;i<cycles;i++)
-        {
-            prices.add(calculateAssumedOptionPrice(i*steps, usedPrice, path, call));
-        }
-
-        return prices;
-
+    public List<Double> getProfits() {
+        return profits;
     }
 }

@@ -1,6 +1,6 @@
 package Product;
 
-import Asset.Asset;
+import Assets.Asset;
 
 
 public class Spot extends Product {

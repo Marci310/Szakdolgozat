@@ -1,25 +1,38 @@
 package Product;
 
-import Asset.Asset;
-import net.finmath.plots.Named;
-import net.finmath.plots.Plot;
-import net.finmath.plots.Plot2D;
+
+import net.finmath.functions.AnalyticFormulas;
+import Assets.Asset;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.function.DoubleUnaryOperator;
 
 public class Call extends Option {
 
-    public Call(double price, Asset asset, LocalDate derivativeDate, double strikePrice, double volatility) {
-        super(price, asset, derivativeDate, strikePrice, volatility);
-        calculatePrice();
+    public Call(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
+        super(volatility, maturity,strikePrice, startDate,expirationDate,asset);
+        getOptionPrice();
     }
 
     @Override
-    public void calculatePrice() {
-        // Implementation for calculating the price of a call option goes here
-        this.setPrice(calculateAssumedCallPrice(getNumberOfTimeSteps(), getStrikePrice()));
+    public void getOptionPrice() {
+        double volatility = getVolatility();
+        int maturity = getMaturity()/365;
+        double originalPrice = getOriginalPrice();
+        double strikePrice = getStrikePrice();
+        LocalDate startDate = getStartDate();
+        double riskFreeRate = getRiskFreeRate();
+
+        setValue(AnalyticFormulas.blackScholesOptionValue(originalPrice, riskFreeRate, volatility, maturity, strikePrice,true));
+    }
+
+    @Override
+    public double calculateProfit(double currentPrice) {
+        return 0;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Call";
     }
 
 }

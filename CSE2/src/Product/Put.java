@@ -1,19 +1,38 @@
 package Product;
 
-import Asset.Asset;
+
+import Assets.Asset;
+import net.finmath.functions.AnalyticFormulas;
 
 import java.time.LocalDate;
 
 public class Put extends Option {
 
-    public Put(double price, Asset asset, LocalDate derivativeDate, double strikePrice, double volatility) {
-        super(price, asset, derivativeDate, strikePrice, volatility);
-        calculatePrice();
+    public Put(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
+        super(volatility, maturity,strikePrice, startDate,expirationDate,asset);
+        getOptionPrice();
     }
 
     @Override
-    public void calculatePrice() {
-        // Implementation for calculating the price of a put option goes here
-        this.setPrice(calculateAssumedPutPrice(getNumberOfTimeSteps(), getStrikePrice()));
+    public void getOptionPrice() {
+        double volatility = getVolatility();
+        int maturity = getMaturity()/365;
+        double originalPrice = getOriginalPrice();
+        double strikePrice = getStrikePrice();
+        LocalDate startDate = getStartDate();
+        double riskFreeRate = getRiskFreeRate();
+
+        setValue( AnalyticFormulas.blackScholesOptionValue(originalPrice, riskFreeRate, volatility, maturity, strikePrice,false));
     }
+
+    @Override
+    public double calculateProfit(double currentPrice) {
+        return 0;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Put";
+    }
+
 }
