@@ -1,16 +1,15 @@
 package Product;
 
-import Asset.Asset;
+import Assets.Asset;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public class Future extends Derivative {
+public class Future {
     public Future(double price, Asset asset, LocalDate derivativeDate, double strikePrice, double volatility) {
-        super(price, asset, derivativeDate, strikePrice, volatility);
+        //super(price, asset, derivativeDate, strikePrice, volatility);
     }
 
-    @Override
+    //@Override
     public void calculatePrice() {
         // Implementation for calculating the price of a future goes here
     }

@@ -1,9 +1,10 @@
-package Asset;
+package Assets;
 
 public class Resources {
     private int cpuCores;
     private int memory;
     private int disk;
+    private double price;
 
     //cpu: number of cores
     //memory: 100 Mbyte
@@ -13,7 +14,23 @@ public class Resources {
         this.cpuCores = cpuCores;
         this.memory = memory;
         this.disk = disk;
+        this.price = calculatePrice();
     }
+
+    private double calculatePrice() {
+        return (cpuCores * 0.05 + memory * 0.1 + disk * 0.02);
+    }
+
+    @Override
+    public String toString() {
+        return "Resources{" +
+                "cpuCores=" + cpuCores +
+                ", memory=" + memory +
+                ", disk=" + disk +
+                ", price=" + price +
+                '}';
+    }
+
 
     // Getters and setters for the private variables
 
@@ -21,27 +38,15 @@ public class Resources {
         return cpuCores;
     }
 
-    public void setCpuCores(int cpuCores) {
-        this.cpuCores = cpuCores;
-    }
-
     public int getMemory() {
         return memory;
-    }
-
-    public void setMemory(int memory) {
-        this.memory = memory;
     }
 
     public int getDisk() {
         return disk;
     }
 
-    public void setDisk(int disk) {
-        this.disk = disk;
-    }
-
-    public int getSize() {
-        return cpuCores * memory * disk;
+    public double getPrice() {
+        return price;
     }
 }

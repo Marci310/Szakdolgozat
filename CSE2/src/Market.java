@@ -1,53 +1,78 @@
-import Asset.Asset;
-import Product.Product;
+import Assets.Asset;
+import Product.Derivative;
+import Product.Option;
+import Product.Spread;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class Market {
-    private Agent[] agents;
-    private Asset[] assets;
-    private int impliedVolatility;
+    private ArrayList<Agent> agents = new ArrayList<>();
+    private ArrayList<Asset> assets = new ArrayList<>();
+
+    /*the assets volatility. it is only here because we use roughly the same assets.
+    using this will allow us to change the asset volatility evereywhere and not have to iterate throught
+    them individually*/
+    private double impliedVolatility;
+
     private String trades;
-    private int riskFreeInterestRate;
 
+    /*
+        we will keep this at 3% for the sake of easiness
+         */
 
-    public Market(Agent[] agents, Asset[] assets, int impliedVolatility, int riskFreeInterestRate) {
-        this.agents = agents;
-        this.assets = assets;
+    private double riskFreeInterestRate;
+
+    public Market(double impliedVolatility, double riskFreeInterestRate) {
+
         this.impliedVolatility = impliedVolatility;
         this.riskFreeInterestRate = riskFreeInterestRate;
     }
 
-    public Market() {    /*ez ide nem kell*/
-        this.agents = null;
-        this.assets = null;
-        this.impliedVolatility = 1;
-        this.riskFreeInterestRate = 1;
+    public void addAsset(Asset asset, int workDays) {
+        asset.addAssetPrice(new Derivative(asset, workDays, impliedVolatility).getRandomPath());
+        assets.add(asset);
     }
 
 
-    public void makeTrade(Agent agent, Product product) {
-        // Implementation goes here
+    public void addAgent(Agent agent) {
+        agents.add(agent);
     }
+
+    public void showcaseAgents(int i, LocalDate currentDate) {
+        for(Agent agent: agents) {
+            try {
+                agent.showcasePortfolio(i, currentDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void makeTrade(int agent, Option option) {
+        agents.get(agent).addOption(option);
+    }
+
+    public void makeTrade(int agent, Spread spread) {
+        agents.get(agent).addSpread(spread);
+    }
+
+    public Asset getAsset(int i) {
+        return assets.get(i);
+    }
+
 
     // Getters and setters for the private variables
-
-    public Agent[] getAgents() {
-        return agents;
+    public Agent getAgent(int index) {
+        return agents.get(index);
     }
 
-    public void setAgents(Agent[] agents) {
-        this.agents = agents;
-    }
-
-    public Asset[] getAssets() {
+    public ArrayList<Asset> getAssets() {
         return assets;
     }
 
-    public void setAssets(Asset[] assets) {
-        this.assets = assets;
-    }
-
-    public int getImpliedVolatility() {
+    public double getImpliedVolatility() {
         return impliedVolatility;
     }
 
@@ -59,11 +84,7 @@ public class Market {
         return trades;
     }
 
-    public void setTrades(String trades) {
-        this.trades = trades;
-    }
-
-    public int getRiskFreeInterestRate() {
+    public double getRiskFreeInterestRate() {
         return riskFreeInterestRate;
     }
 
