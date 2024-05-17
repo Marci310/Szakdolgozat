@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 public class ShortCall extends Call {
 
-    public ShortCall(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
-        super(volatility, maturity,strikePrice, startDate,expirationDate,asset);
+    public ShortCall(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset, int i) {
+        super(volatility, maturity,strikePrice, startDate,expirationDate,asset,i);
 
     }
 

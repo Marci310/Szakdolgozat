@@ -4,10 +4,12 @@ import Assets.Asset;
 
 import java.time.LocalDate;
 
+
+/**Short call with higher long call*/
 public class BearCallSpread extends Spread{
 
-    public BearCallSpread(double volatility, int maturity, double shortStrikePrice, double longStrikePrice, LocalDate startDate, LocalDate expirationDate, Asset asset){
-        super(new LongCall(volatility, maturity, longStrikePrice, startDate, expirationDate, asset), new ShortCall(volatility, maturity, shortStrikePrice, startDate, expirationDate, asset));
+    public BearCallSpread(double volatility, int maturity, double shortStrikePrice, double longStrikePrice, LocalDate startDate, LocalDate expirationDate, Asset asset, int i){
+        super(new LongCall(volatility, maturity, longStrikePrice, startDate, expirationDate, asset,i), new ShortCall(volatility, maturity, shortStrikePrice, startDate, expirationDate, asset,i));
     }
 
     @Override

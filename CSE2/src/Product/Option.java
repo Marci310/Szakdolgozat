@@ -21,10 +21,10 @@ public abstract class Option
     private List<Double> profits = new ArrayList<>();
     private Asset asset;
 
-    public Option(double volatility, int maturity, double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
+    public Option(double volatility, int maturity, double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset, int i) {
         this.volatility = volatility;
         this.maturity = maturity;
-        this.originalPrice = asset.getPrice();
+        this.originalPrice = asset.getCurrentPrice(i);
         this.strikePrice = strikePrice;
         this.startDate = startDate;
         this.expirationDate = expirationDate;

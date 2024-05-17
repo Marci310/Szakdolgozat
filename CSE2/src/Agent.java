@@ -36,7 +36,7 @@ public class Agent {
                 pathes.add(path);
                 pathes.add(option.getProfits());
                 plot.showCaseMore(pathes, option.getTitle());
-                table.showCase(pathes,option.getTitle());
+                //table.showCase(pathes,option.getTitle());
             }
         }
         for (Spread spread : spreads) {
@@ -47,7 +47,7 @@ public class Agent {
                 pathes.add(path);
                 pathes.add(spread.getOption1().getProfits());
                 plot.showCaseMore(pathes, spread.getTitle());
-                table.showCase(pathes,spread.getTitle());
+                //table.showCase(pathes,spread.getTitle());
             }
         }
     }
