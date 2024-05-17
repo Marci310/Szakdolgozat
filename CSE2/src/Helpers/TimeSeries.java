@@ -59,14 +59,6 @@ public class TimeSeries {
         return workDays;
     }
 
-    public static void main(String[] args) {
-        LocalDate start = LocalDate.of(2024,4,20);
-        LocalDate end = LocalDate.of(2024,12,31);
-
-        TimeSeries c= new TimeSeries(start,end);
-        System.out.println(c.getNumberOfWorkDays());
-
-    }
 
 
 }

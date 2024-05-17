@@ -11,6 +11,8 @@ public abstract class Spread {
     }
 
     public double calculateProfit(double currentPrice) {
+        double proit1 = option1.calculateProfit(currentPrice);
+        double proit2 = option2.calculateProfit(currentPrice);
         return option1.calculateProfit(currentPrice) + option2.calculateProfit(currentPrice);
     }
 

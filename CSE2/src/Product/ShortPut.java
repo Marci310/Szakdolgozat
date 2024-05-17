@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 public class ShortPut extends Put {
 
-    public ShortPut(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset) {
-        super(volatility, maturity,strikePrice, startDate,expirationDate,asset);
+    public ShortPut(double volatility, int maturity,  double strikePrice, LocalDate startDate,LocalDate expirationDate, Asset asset, int i) {
+        super(volatility, maturity,strikePrice, startDate,expirationDate,asset,i);
 
     }
 

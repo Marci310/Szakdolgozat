@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 public class LongPut extends Put {
 
-    public LongPut(double volatility, int maturity, double strikePrice, LocalDate startDate, LocalDate expirationDate, Asset asset) {
-        super(volatility, maturity, strikePrice, startDate, expirationDate, asset);
+    public LongPut(double volatility, int maturity, double strikePrice, LocalDate startDate, LocalDate expirationDate, Asset asset, int i) {
+        super(volatility, maturity, strikePrice, startDate, expirationDate, asset,i);
 
     }
 

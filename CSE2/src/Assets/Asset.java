@@ -9,6 +9,7 @@ public class Asset {
     private Resources resources;
     private double riskFreeRate;
     private List<Double> assetPrice;
+    public double days;
 
     public Asset(int unitCount, Resources resources, int distance, double riskFreeRate, int steps) {
         this.unitCount = unitCount;
@@ -39,8 +40,12 @@ public class Asset {
         this.assetPrice = assetPrice;
     }
 
-    public List<Double> getAssetPrice(){
+    public List<Double> getAssetPrice() {
         return assetPrice;
+    }
+
+    public double getCurrentPrice(int day) {
+        return assetPrice.get(day);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.finmath.time.TimeDiscretizationFromArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Derivative {
@@ -18,7 +19,7 @@ public class Derivative {
     private double volatility;
     private final int workdays;
     private TimeDiscretizationFromArray td;
-    private final int NUMOFPATHS = 1000;
+    private final int NUMOFPATHS = 10000;
     private EulerSchemeFromProcessModel process;
     private BrownianMotion brownianMotion;
     private final List<Double> randomPath;
@@ -35,16 +36,20 @@ public class Derivative {
 
 
     private void generateProcess() {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(9000) + 1000;
         var model = new BlackScholesModel(asset.getPrice(), asset.getDailyRiskFreeRate(workdays), volatility);
-        td = new TimeDiscretizationFromArray(0.0, workdays, 0.01);
-        brownianMotion = new BrownianMotionFromMersenneRandomNumbers(td, 1, NUMOFPATHS, 3231);
+        td = new TimeDiscretizationFromArray(0.0, workdays, 1);
+        brownianMotion = new BrownianMotionFromMersenneRandomNumbers(td, 1, NUMOFPATHS, randomNumber);
         process = new EulerSchemeFromProcessModel(model, brownianMotion);
     }
 
     private void generatePath() {
-        int rnd = (int) (Math.random() * NUMOFPATHS);
         for (int i = 0; i <= workdays; i++) {
-            randomPath.add(process.getProcessValue(i, 0).get(rnd));
+            double value = 0;
+            for (int j = 0; j < NUMOFPATHS; j++)
+                value+=process.getProcessValue(i, 0).get(j);
+            randomPath.add(value/NUMOFPATHS);
         }
     }
 
