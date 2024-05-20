@@ -16,7 +16,7 @@ public class Market {
     them individually*/
     private double impliedVolatility;
 
-    private String trades;
+    private String trades = "";
 
     /*
         we will keep this at 3% for the sake of easiness
@@ -52,10 +52,12 @@ public class Market {
 
     public void makeTrade(int agent, Option option) {
         agents.get(agent).addOption(option);
+        trades += "Agent " + agent + " bought " + option.getTitle() + "\n";
     }
 
     public void makeTrade(int agent, Spread spread) {
         agents.get(agent).addSpread(spread);
+        trades += "Agent " + agent + " bought " + spread.getTitle() + "\n";
     }
 
     public Asset getAsset(int i) {

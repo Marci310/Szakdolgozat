@@ -13,6 +13,6 @@ public class BullPutSpread extends Spread{
 
     @Override
     public String getTitle() {
-        return "Bull Put Spread with long put at " + getOption1().getStrikePrice() + " and short put at " + getOption2().getStrikePrice() + "\n from" + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
+        return "Bull Put Spread with long put at " + getOption1().getStrikePrice() + " and short put at " + getOption2().getStrikePrice() + "\n from " + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
     }
 }

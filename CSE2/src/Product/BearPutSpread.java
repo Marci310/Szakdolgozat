@@ -12,6 +12,6 @@ public class BearPutSpread extends Spread{
 
     @Override
     public String getTitle() {
-        return "Bear Put Spread with long call at " + getOption1().getStrikePrice() + " and short call at " + getOption2().getStrikePrice() + "\n from" + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
+        return "Bear Put Spread with long call at " + getOption1().getStrikePrice() + " and short call at " + getOption2().getStrikePrice() + "\n from " + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
     }
 }

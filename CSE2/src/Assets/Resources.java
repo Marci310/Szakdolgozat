@@ -18,7 +18,7 @@ public class Resources {
     }
 
     private double calculatePrice() {
-        return (cpuCores * 0.05 + memory * 0.1 + disk * 0.02);
+        return (cpuCores * 0.5 + memory * 2 + disk * 0.2);
     }
 
     @Override

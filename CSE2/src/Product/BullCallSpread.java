@@ -14,6 +14,6 @@ public class BullCallSpread extends Spread{
 
     @Override
     public String getTitle() {
-        return "Bull Call Spread with long call at " + getOption1().getStrikePrice() + " and short call at " + getOption2().getStrikePrice() + "\n from" + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
+        return "Bull Call Spread with long call at " + getOption1().getStrikePrice() + " and short call at " + getOption2().getStrikePrice() + "\n from " + getOption1().getStartDate().toString() + " till " + getOption1().getExpirationDate().toString();
     }
 }

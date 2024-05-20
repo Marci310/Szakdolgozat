@@ -1,7 +1,6 @@
 package Product;
 
 import Assets.Asset;
-import net.finmath.functions.AnalyticFormulas;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,11 +66,11 @@ public abstract class Option
     }
 
     public double getStrikePrice() {
-        return strikePrice;
+        return (double) Math.round(strikePrice * 100) /100;
     }
 
     public double getOriginalPrice() {
-        return originalPrice;
+        return (double) Math.round(originalPrice * 100) /100;
     }
 
     public int getMaturity() {
