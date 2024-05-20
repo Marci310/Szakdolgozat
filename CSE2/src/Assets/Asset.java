@@ -22,7 +22,7 @@ public class Asset {
     public void createPrice() {
         double resourcePrice = resources.getPrice();
         double distanceDiscount = 0.2 * (1 - (double) distance / 100);
-        price = (resourcePrice - (distanceDiscount * resourcePrice) + 0.1 * resourcePrice) * unitCount;
+        price = (resourcePrice + (distanceDiscount * resourcePrice) + 0.1 * resourcePrice) * unitCount;
     }
 
 
